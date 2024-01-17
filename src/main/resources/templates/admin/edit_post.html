@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div th:replace="~{common :: myheader}"></div>
+	<title>Post | Edit</title>
+</head>
+
+<body>
+
+	<div th:replace="~{common :: myadminnav}"></div>
+
+	<br><br>
+	
+	<div class="container">
+		<div class="row mt-4 mb-4">
+			<div class="col-lg-12">
+				<div class="row my-4">
+					<h1>Edit Post</h1>
+				</div> 
+
+				<div class="row mt-4 mb-4">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="text-center">Edit <span th:text="*{title}"></span></h2>
+                            </div>
+                            <div class="card-body">
+                                <form role="form" method="post" th:action="@{/admin/posts/{postId}(postId=${post.id})}" th:object="${post}">
+                                    
+                                    <input type="hidden" th:field="*{url}">
+                                    <input type="hidden" th:field="*{createdOn}">
+
+                                    <div class="form-group mb-3">
+                                      <label for="title">Title</label>
+                                      <input th:field="*{title}" type="text" name="title" id="title" class="form-control" placeholder="Enter post title" aria-describedby="helpId">
+                                      <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger">Post title</small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="shortDescription">Short Description</label>
+                                        <input th:field="*{shortDescription}" type="text" name="shortDescription" id="shortDescription" class="form-control" placeholder="Enter post short description" aria-describedby="helpId">
+                                        <small th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}" class="text-danger">Post short description</small>
+                                      </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="shortDescription">Content</label>
+                                        <textarea rows="12" th:field="*{content}" type="text" name="content" id="content" class="form-control" placeholder="Enter post content"></textarea>
+                                        <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger">Post content</small>
+                                      </div>
+
+                                      <button type="submit" class="btn btn-primary">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div th:insert="~{common :: myfooter}"></div>
+</body>
+
+</html>

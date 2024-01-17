@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{common :: myheader}"></div>
+		<title>Post | Home</title>
+	</head>
+
+	<body>
+		<div th:replace="~{common :: mynav}"></div>
+
+		<br /><br />
+
+		<div class="container">
+			<div class="row mt-4 mb-4">
+				<div class="col-md-9">
+
+					<div th:each="post: ${postResponse}">
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <h3><a th:href="@{/post/{postUrl}(postUrl=${post.url})}" th:text="${post.title}"></a></h3>
+                                <strong th:text="${#temporals.format(post.createdOn, 'dd MMM yyyy')}"></strong>
+                            </div>
+                            <div class="card-body">
+                                <span th:utext="${post.shortDescription}"></span>
+                                <a th:href="@{/post/{postUrl}(postUrl=${post.url})}">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+
+				</div>
+				<div class="col-md-3">
+					<div th:replace="~{common :: search}"></div>
+				</div>
+			</div>
+		</div>
+
+		<div th:insert="~{common :: myfooter}"></div>
+	</body>
+</html>

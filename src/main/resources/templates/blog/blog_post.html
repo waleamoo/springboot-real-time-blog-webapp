@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{common :: myheader}"></div>
+		<title>Post | Blog</title>
+	</head>
+
+	<body>
+		<div th:replace="~{common :: mynav}"></div>
+
+		<br /><br />
+
+		<div class="container">
+			<div class="row mt-4 mb-4">
+				<div class="col-md-9">
+					<!-- Blog -->
+					<div class="card mb-2">
+						<div class="card-header">
+							<h3><a th:href="@{/post/{postUrl}(postUrl=${post.url})}" th:text="${post.title}"></a></h3>
+							
+						</div>
+						<div class="card-body">
+							<span th:utext="${post.content}"></span>
+						</div>
+						<div class="card-footer">
+							<strong th:text="${#temporals.format(post.createdOn, 'dd MMM yyyy')}"></strong>
+						</div>
+					</div>
+
+					<!-- Comment section -->
+					<div>
+						<h3>Comments:</h3>
+						<div class="card">
+							<div class="card-header"><h2>Leave a comment</h2></div>
+							<div class="card-body">
+								<form role="form" method="post" th:action="@{/{postUrl}/comments(postUrl=${post.url})}" th:object="${comment}">
+									<div class="form-group">
+									  <label for="name">Name</label>
+									  <input th:field="*{name}" type="text" name="name" id="name" class="form-control" placeholder="Enter name">
+									  <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Name of commenter</small>
+									</div>
+									<div class="form-group">
+									  <label for="email">Email</label>
+									  <input th:field="*{email}" type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+									  <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Email of commenter</small>
+									</div>
+									<div class="form-group">
+									  <label for="content">Comment</label>
+									  <textarea th:field="*{content}" name="content" cols="25" class="form-control" placeholder="Enter comment"></textarea>
+									  <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger">Your comment</small>
+									</div>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</form>
+							</div>
+						</div>
+
+						<!-- Post comments -->
+						<div th:each="comment: ${post.comments}">
+							<div>
+								<p><b>Name:</b> <strong th:text="${comment.name}"></strong></p>
+								<p><b>Date:</b> <strong th:text="${#temporals.format(comment.createdOn, 'dd MMM yyyy')}"></strong></p>
+								<p th:utext="${comment.content}"></p>
+								<br />
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-3">
+					<div th:replace="~{common :: search}"></div>
+				</div>
+			</div>
+		</div>
+
+		<div th:insert="~{common :: myfooter}"></div>
+	</body>
+</html>
