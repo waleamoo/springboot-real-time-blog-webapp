@@ -30,19 +30,26 @@ public class WebSpringSecurity {
     }
 
     // we can define spring beans here 
+    /**
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf -> csrf.disable())
                 //.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/register/**")).permitAll()
+                .authorizeHttpRequests((authorize) -> authorize
                                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/register/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/error/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/post/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/page/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyRole("ADMIN", "GUEST")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/admin/posts").loginProcessingUrl("/login").permitAll()
+                .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/admin/posts", false).loginProcessingUrl("/login").permitAll()
                 ).logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 
         return http.build();  
